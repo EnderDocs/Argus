@@ -1,1 +1,0 @@
-containerfile basico para dar deploy repetivel em qualquer maquina
