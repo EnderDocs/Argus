@@ -1,0 +1,36 @@
+# ==============================================================================
+# .dockerignore - Impede o envio de pastas pesadas e binários locais para o Docker
+# ==============================================================================
+
+# Git e Documentação pesada
+.git/
+.gitignore
+docs/*.pdf
+docs/*.drawio
+
+# Ambientes virtuais e caches Python (Windows/Host)
+.venv/
+backend/.venv/
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+.pytest_cache/
+.ruff_cache/
+
+# Dependências e builds Node (Windows/Host)
+node_modules/
+frontend/node_modules/
+frontend/dist/
+.vite/
+
+# Armazenamento e dados
+storage/datasets/*
+storage/proofs/*
+storage/evidence/*
+data/mysql/
+
+# Segredos e logs
+.env
+.env.local
+*.log
