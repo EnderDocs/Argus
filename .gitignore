@@ -1,0 +1,61 @@
+# Ambientes virtuais Python
+.venv/
+venv/
+env/
+ENV/
+*.venv
+
+# Python / Django
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.ruff_cache/
+*.sqlite3
+*.db
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Node / Frontend
+node_modules/
+dist/
+dist-ssr/
+*.local
+.npm
+.vite/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Ficheiros de Ambiente e Segredos (NUNCA comitar)
+.env
+.env.local
+.env.*.local
+*.env
+
+# Armazenamento físico de datasets e comprovativos
+storage/datasets/*
+storage/proofs/*
+storage/evidence/*
+!storage/.gitignore
+!storage/*/.gitkeep
+
+# Dados locais do container MySQL
+data/mysql/
+
+# IDE e Sistema Operativo
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+
+# Ficheiros de logs
+*.log

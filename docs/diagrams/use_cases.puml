@@ -1,0 +1,151 @@
+@startuml Argus_Use_Cases
+!theme plain
+skinparam backgroundColor #ffffff
+skinparam defaultFontName Segoe UI
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam roundcorner 10
+
+skinparam actor {
+    BorderColor #1e40af
+    BackgroundColor #dbeafe
+    FontStyle bold
+}
+
+skinparam usecase {
+    BorderColor #64748b
+    BackgroundColor #f8fafc
+    FontSize 11
+}
+
+skinparam Arrow {
+    Color #94a3b8
+    FontColor #475569
+    FontSize 10
+}
+
+left to right direction
+
+' ───────────────────────────────────────────
+' ATORES
+' ───────────────────────────────────────────
+actor "Visitante" as V
+actor "Investigador" as I
+actor "Contribuidor" as C
+actor "Moderador" as M
+actor "Administrador" as A
+
+' Contribuidor herda do Investigador
+C -up-|> I
+
+' ───────────────────────────────────────────
+' FRONTEIRA DO SISTEMA
+' ───────────────────────────────────────────
+rectangle "Argus" {
+
+    package "Catálogo Público" {
+        usecase "V1 Pesquisar datasets" as V1
+        usecase "V2 Consultar ficha técnica" as V2
+        usecase "V3 Pré-visualizar sinal" as V3
+        usecase "V4 Consultar rankings" as V4
+        usecase "V5 Criar conta" as V5
+    }
+
+    package "Consumo de Dados" {
+        usecase "I1 Descarregar dataset" as I1
+        usecase "I2 Pedir acesso a privado" as I2
+        usecase "I3 Avaliar qualidade" as I3
+        usecase "I4 Reportar problema" as I4
+        usecase "I5 Comparar datasets" as I5
+    }
+
+    package "Publicação e Gestão" {
+        usecase "C1 Submeter dataset público" as C1
+        usecase "C2 Registar dataset privado" as C2
+        usecase "C3 Solicitar certificação" as C3
+        usecase "C4 Decidir pedido de acesso" as C4
+        usecase "C5 Publicar nova versão" as C5
+    }
+
+    package "Moderação" {
+        usecase "M1 Validar certificação" as M1
+        usecase "M2 Validar comprovativo" as M2
+        usecase "M3 Tratar reports" as M3
+        usecase "M4 Moderar reviews" as M4
+        usecase "M5 Sinalizar utilizador" as M5
+    }
+
+    package "Administração" {
+        usecase "A1 Gerir utilizadores" as A1
+        usecase "A2 Gerir papéis" as A2
+        usecase "A3 Tratar utilizadores sinalizados" as A3
+        usecase "A4 Consultar painel global" as A4
+        usecase "A5 Gerir catálogos de referência" as A5
+    }
+
+    ' ── Comportamentos partilhados (internos) ──
+    usecase "Validar ficheiro CSV" as SysCSV #f1f5f9
+    usecase "Gerar relatório de qualidade (Q)" as SysQ #f1f5f9
+    usecase "Conceder acesso atómico\n(RN-12)" as SysAccess #f1f5f9
+    usecase "Verificar permissão" as SysPerm #f1f5f9
+    usecase "Registar auditoria" as SysAudit #f1f5f9
+    usecase "Anexar comprovativo" as ExtProof #fff7ed
+    usecase "Despublicar dataset" as ExtUnpublish #fff1f2
+}
+
+' ───────────────────────────────────────────
+' ASSOCIAÇÕES ATOR → CASO DE USO
+' ───────────────────────────────────────────
+V --> V1
+V --> V2
+V --> V3
+V --> V4
+V --> V5
+
+I --> I1
+I --> I2
+I --> I3
+I --> I4
+I --> I5
+
+C --> C1
+C --> C2
+C --> C3
+C --> C4
+C --> C5
+
+M --> M1
+M --> M2
+M --> M3
+M --> M4
+M --> M5
+
+A --> A1
+A --> A2
+A --> A3
+A --> A4
+A --> A5
+
+' ───────────────────────────────────────────
+' RELAÇÕES <<include>>
+' ───────────────────────────────────────────
+C1 ..> SysCSV       : <<include>>
+C1 ..> SysQ         : <<include>>
+C2 ..> SysCSV       : <<include>>
+C2 ..> SysQ         : <<include>>
+C5 ..> SysCSV       : <<include>>
+I1 ..> SysPerm      : <<include>>
+C4 ..> SysAccess    : <<include>>
+M2 ..> SysAccess    : <<include>>
+SysAccess ..> SysAudit : <<include>>
+M1 ..> SysAudit     : <<include>>
+M4 ..> SysAudit     : <<include>>
+A2 ..> SysAudit     : <<include>>
+
+' ───────────────────────────────────────────
+' RELAÇÕES <<extend>> (condicionais)
+' ───────────────────────────────────────────
+ExtProof    .> I2 : <<extend>>\nse Preço > 0 €
+ExtUnpublish .> M3 : <<extend>>\nse infração grave
+
+@enduml
