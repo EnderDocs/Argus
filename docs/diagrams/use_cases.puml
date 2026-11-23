@@ -1,4 +1,10 @@
 @startuml Argus_Use_Cases
+' Cópia textual de use_cases.drawio (modelo base).
+' Nomes, identificadores, pacotes e relações reproduzem o ficheiro Drawio.
+
+' ============================================================
+' 1. CONFIGURAÇÃO VISUAL
+' ============================================================
 !theme plain
 skinparam backgroundColor #ffffff
 skinparam defaultFontName Segoe UI
@@ -26,126 +32,137 @@ skinparam Arrow {
 
 left to right direction
 
-' ───────────────────────────────────────────
-' ATORES
-' ───────────────────────────────────────────
+' ============================================================
+' 2. ATORES
+' ============================================================
 actor "Visitante" as V
 actor "Investigador" as I
 actor "Contribuidor" as C
 actor "Moderador" as M
 actor "Administrador" as A
 
-' Contribuidor herda do Investigador
-C -up-|> I
+' ============================================================
+' 3. CASOS DE USO — pacotes do Drawio
+' ============================================================
+package "Catalogo Público" {
+    usecase "V1 Pesquisar datasets" as V1
+    usecase "V2 Consultar ficha dataset (metadados)" as V2
+    usecase "V3 Pré-visualizar dados" as V3
+    usecase "V4 Consultar rankings" as V4
+    usecase "V5 Criar conta" as V5
+}
 
-' ───────────────────────────────────────────
-' FRONTEIRA DO SISTEMA
-' ───────────────────────────────────────────
-rectangle "Argus" {
+package "Consumo de Dados" {
+    usecase "I1 Download dataset" as I1
+    usecase "I2 Comprar dataset" as I2
+    usecase "I3 Review/Avaliar qualidade de datasets" as I3
+    usecase "I4 Reportar problema" as I4
+    usecase "I5 Pedido de dataset / mensagem" as I5
+}
 
-    package "Catálogo Público" {
-        usecase "V1 Pesquisar datasets" as V1
-        usecase "V2 Consultar ficha técnica" as V2
-        usecase "V3 Pré-visualizar sinal" as V3
-        usecase "V4 Consultar rankings" as V4
-        usecase "V5 Criar conta" as V5
-    }
+package "Publicação e Gestão" {
+    usecase "C1 Submeter dataset público" as C1
+    usecase "C2 Submeter dataset privado" as C2
+    usecase "C3 Solicitar certificação" as C3
+    usecase "C4 Venda dataset privado" as C4
+    usecase "C5 Resposta a pedido / mensagem" as C5
+}
 
-    package "Consumo de Dados" {
-        usecase "I1 Descarregar dataset" as I1
-        usecase "I2 Pedir acesso a privado" as I2
-        usecase "I3 Avaliar qualidade" as I3
-        usecase "I4 Reportar problema" as I4
-        usecase "I5 Comparar datasets" as I5
-    }
+package "Moderação" {
+    usecase "M1 Moderar certificação" as M1
+    usecase "M2 Moderar reports problemas" as M2
+    usecase "M3 Moderar reviews" as M3
+    usecase "M4 Moderar Datasets publicados" as M4
+    usecase "M5 Moderar transações" as M5
+    usecase "M6 Moderar pedidos / mensagens" as M6
+    usecase "M7 Consulta metricas e modificar" as M7
+    usecase "M8 Sinalizar utilizador" as M8
+}
 
-    package "Publicação e Gestão" {
-        usecase "C1 Submeter dataset público" as C1
-        usecase "C2 Registar dataset privado" as C2
-        usecase "C3 Solicitar certificação" as C3
-        usecase "C4 Decidir pedido de acesso" as C4
-        usecase "C5 Publicar nova versão" as C5
-    }
+package "Administração" {
+    usecase "A1 Gerir utilizadores" as A1
+    usecase "A2 Gerir permissões" as A2
+    usecase "A3 Moderar utilizadores sinalizados" as A3
+    usecase "A4 Consultar painel global" as A4
+}
 
-    package "Moderação" {
-        usecase "M1 Validar certificação" as M1
-        usecase "M2 Validar comprovativo" as M2
-        usecase "M3 Tratar reports" as M3
-        usecase "M4 Moderar reviews" as M4
-        usecase "M5 Sinalizar utilizador" as M5
-    }
-
-    package "Administração" {
-        usecase "A1 Gerir utilizadores" as A1
-        usecase "A2 Gerir papéis" as A2
-        usecase "A3 Tratar utilizadores sinalizados" as A3
-        usecase "A4 Consultar painel global" as A4
-        usecase "A5 Gerir catálogos de referência" as A5
-    }
-
-    ' ── Comportamentos partilhados (internos) ──
+package "Comportamentos partilhados (internos)" {
     usecase "Validar ficheiro CSV" as SysCSV #f1f5f9
-    usecase "Gerar relatório de qualidade (Q)" as SysQ #f1f5f9
-    usecase "Conceder acesso atómico\n(RN-12)" as SysAccess #f1f5f9
     usecase "Verificar permissão" as SysPerm #f1f5f9
-    usecase "Registar auditoria" as SysAudit #f1f5f9
     usecase "Anexar comprovativo" as ExtProof #fff7ed
     usecase "Despublicar dataset" as ExtUnpublish #fff1f2
 }
 
-' ───────────────────────────────────────────
-' ASSOCIAÇÕES ATOR → CASO DE USO
-' ───────────────────────────────────────────
-V --> V1
-V --> V2
-V --> V3
-V --> V4
-V --> V5
+' ============================================================
+' 4. ASSOCIAÇÕES ATOR → CASO DE USO
+' ============================================================
+' Visitante
+V -- V1
+V -- V2
+V -- V3
+V -- V4
+V -- V5
 
-I --> I1
-I --> I2
-I --> I3
-I --> I4
-I --> I5
+' Investigador
+I -- I1
+I -- I2
+I -- I3
+I -- I4
+I -- I5
 
-C --> C1
-C --> C2
-C --> C3
-C --> C4
-C --> C5
+' Contribuidor
+C -- C1
+C -- C2
+C -- C3
+C -- C4
+C -- C5
 
-M --> M1
-M --> M2
-M --> M3
-M --> M4
-M --> M5
+' Moderador
+M -- M1
+M -- M2
+M -- M3
+M -- M4
+M -- M5
+M -- M8
 
-A --> A1
-A --> A2
-A --> A3
-A --> A4
-A --> A5
+' Administrador
+A -- A1
+A -- A2
+A -- A3
+A -- A4
 
-' ───────────────────────────────────────────
-' RELAÇÕES <<include>>
-' ───────────────────────────────────────────
-C1 ..> SysCSV       : <<include>>
-C1 ..> SysQ         : <<include>>
-C2 ..> SysCSV       : <<include>>
-C2 ..> SysQ         : <<include>>
-C5 ..> SysCSV       : <<include>>
-I1 ..> SysPerm      : <<include>>
-C4 ..> SysAccess    : <<include>>
-M2 ..> SysAccess    : <<include>>
-SysAccess ..> SysAudit : <<include>>
-M1 ..> SysAudit     : <<include>>
-M4 ..> SysAudit     : <<include>>
-A2 ..> SysAudit     : <<include>>
+' ============================================================
+' 5. RELAÇÕES INTERNAS
+' Direção e cores do Drawio. O Drawio não define estereótipos
+' UML; as setas são associações dirigidas.
+' ============================================================
+' 5.1 Moderação / revisão (azul)
+M  -[#6c8ebf]-> M4
+I3 -[#6c8ebf]-> M3
+I4 -[#6c8ebf]-> M2
+M4 -[#6c8ebf]-> SysCSV
 
-' ───────────────────────────────────────────
-' RELAÇÕES <<extend>> (condicionais)
-' ───────────────────────────────────────────
-ExtProof    .> I2 : <<extend>>\nse Preço > 0 €
-ExtUnpublish .> M3 : <<extend>>\nse infração grave
+' 5.2 Verificação de permissão (preto)
+I1 -[#000000]-> SysPerm
+I2 -[#000000]-> SysPerm
+
+' 5.3 Comprovativo de transação (laranja)
+I2 -[#d79b00]-> ExtProof
+C4 -[#d79b00]-> ExtProof
+M5 -[#d79b00]-> ExtProof
+
+' 5.4 Resposta a pedido / mensagem (verde)
+I5 -[#82b366]-> C5
+M6 -[#82b366]-> C5
+
+' 5.5 Certificação (roxo)
+C3 -[#9673a6]-> M1
+
+' 5.6 Sinalização para administração (vermelho)
+M8 -[#b85450]-> A3
+
+' 5.7 Despublicação e comprovativo (cinza)
+SysCSV -[#94a3b8]-> ExtUnpublish
+SysPerm -[#94a3b8]-> ExtProof
 
 @enduml
